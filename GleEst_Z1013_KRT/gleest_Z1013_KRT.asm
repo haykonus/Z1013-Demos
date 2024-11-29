@@ -115,7 +115,7 @@ lo      function x, x&255
                         plot:
                                 ld      a,e
                                 rra
-                                cp      0c0h
+                                cp      0ffh		; Y max  
                                 
                                 ld      b,a
                                 
