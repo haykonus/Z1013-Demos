@@ -11,6 +11,8 @@
 
 Diese Demo für den [Z1013 mit KRT-Grafik](https://hc-ddr.hucki.net/wiki/doku.php/z1013/erweiterungen/vollgrafik#krt-grafik_kleinstrechnertipps) basiert auf [GleEst](https://zxart.ee/eng/software/demoscene/intro/256b-intro/gleest/) für den ZX-Spectrum, programmiert von Oleg Senin (bfox, St.Petersburg, Russia). Diese 256 Byte-Demo enthält im Original noch eine Sound-Ausgabe über den AY-3-8912 und setzt die Farb-Attribute des ZX-Spectrum. Der Algorithmus wurde extrahiert, leicht modifiziert (RAM-Speicherbedarf optimiert) sowie Sound- und Farb-Effekte wurden entfernt.
 
+Zum Assemblieren wurde der [Arnold-Assembler](http://john.ccac.rwth-aachen.de:8000/as/) unter Windows 11 verwendet.
+
 ## Vorausetzungen
 
 - Z1013 mit KRT-Grafik
