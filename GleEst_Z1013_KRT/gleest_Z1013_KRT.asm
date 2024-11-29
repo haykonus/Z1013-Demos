@@ -21,7 +21,7 @@ lo      function x, x&255
 ;------------------------------------------------------------------------------
         
         ; Start GleEst
-        
+	
         ld      sp, stack
         ld      hl, buffer1
         
@@ -47,10 +47,10 @@ lo      function x, x&255
                                 
                                 ld      a,(hl)          ;BWS-Block holen
                                 out     (deco),a        ;BWS_Block setzen
-
-                                ;ld     a,(de)          ;BWS lesen
-                                ld      a,0FFh          ;wegen Bug?, BWS lesen geht nicht
-                                                        ;FF = alle Pixel löschen 
+				inc	hl
+							
+                                ld      a,(de)     	;BWS-Byte holen (t)  	
+				or	(hl)		;mit BWS-Byte (t-1) kombinieren (Bits löschen)                                               
                                 ld      (de),a          ;BWS schreiben 
                                 
                                 exx                     
@@ -128,20 +128,25 @@ lo      function x, x&255
                                 ; out: HL = VRAM, (ldeco)= BWS-Block, A = Bitpos (3-Bit binär)
                                 
                                 call    c,yx2ad  
-                        
-                                ld      b,hi(sprite)    ; 1 aus 8 Decoder
-                                ld      c,a
-                                ld      a,(bc)          ; BWS-Byte holen
-                                and     a,(hl)          ; Hintergrund und Pixel kombinieren
-                                ld      (hl),a          ; BWS-Byte neu schreiben
-                        
+
+				ld	b,hi(sprite-1)		
+				cpl
+				ld	c,a		
+				ld	a,(bc)		; BWS-Byte holen
+				and	(hl)            ; Hintergrund und Pixel 
+				ld	(hl),a          ; BWS-Byte neu schreiben
+				cpl
+				
                                 push    hl
                                 
                                 exx
                                 
                                 pop     de              
-                                
-                                ld      a, (ldeco)      ; BWS-Block holen
+                   
+				ld	(hl),a 		; BWS-Byte merken
+				dec 	hl
+					
+                                ld      a,(ldeco)       ; BWS-Block holen
                                 ld      (hl),a          ; BWS-Block merken
                                 dec     hl
                                 
@@ -150,7 +155,8 @@ lo      function x, x&255
                                 
                                 ld      (hl),e          ; BWS lo merken
                                 inc     hl                      
-                                inc     hl      
+                                inc     hl
+				inc	hl		
                                 ld      a,b
                                 
                                 exx
@@ -202,20 +208,19 @@ lo      function x, x&255
         jp      loop_ix
         
 ;------------------------------------------------------------------------------
-        
-        align 100h
-        
-        ; 1 aus 8 Decoder
-sprite: 
-        db 01111111b
-        db 10111111b
-        db 11011111b
-        db 11101111b
-        db 11110111b
-        db 11111011b
-        db 11111101b
-        db 11111110b
-        
+
+	org	BASE+0F8h
+
+	db 	11111110b
+	db 	11111101b
+	db 	11111011b
+	db 	11110111b
+	db 	11101111b
+	db	11011111b
+	db 	10111111b
+	db	01111111b
+sprite:
+
         
 ;------------------------------------------------------------------------------
 ; Z1013 KRT Grafik-Routinen von Dietmar Uhlig aus:
