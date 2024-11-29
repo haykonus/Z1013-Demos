@@ -13,7 +13,7 @@ Diese Demo für den [Z1013 mit KRT-Grafik](https://hc-ddr.hucki.net/wiki/doku.ph
 
 ## Vorausetzungen
 
-- Z1013 mit KRT Grafik
+- Z1013 mit KRT-Grafik
 - oder [JKCEMU](http://www.jens-mueller.org/jkcemu/index.html)
 - 4KB RAM
 
