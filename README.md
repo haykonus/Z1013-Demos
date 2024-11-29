@@ -1,4 +1,4 @@
-[English version](https://github-com.translate.goog/haykonus/JU-TE-6K-Demos?_x_tr_sl=de&_x_tr_tl=en&_x_tr_hl=de&_x_tr_pto=wapp)
+<!-- [English version](https://github-com.translate.goog/haykonus/JU-TE-6K-Demos?_x_tr_sl=de&_x_tr_tl=en&_x_tr_hl=de&_x_tr_pto=wapp) -->
 # INHALT
 
 [GleEst für Z1013 KRT](https://github.com/haykonus/Z1013-Demos/blob/main/README.md#gleest-f%C3%BCr-z1013-krt)
