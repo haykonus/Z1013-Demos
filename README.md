@@ -31,6 +31,7 @@ https://hc-ddr.hucki.net/wiki/doku.php/z1013/erweiterungen/vollgrafik#krt-grafik
 
 https://github.com/duhlig/Z1013_software/tree/main/krtdemo
 
-https://zxart.ee/spa/software/demoscene/intro/256b-intro/gleest/gleest/
+https://zxart.ee/eng/software/demoscene/intro/256b-intro/gleest/gleest/
+
 
 
