@@ -1,4 +1,4 @@
- AS V1.42 Beta [Bld 240] - Source File gleest_Z1013_KRT.asm - Page 1 - 11/29/2024 22:34:20
+ AS V1.42 Beta [Bld 240] - Source File gleest_Z1013_KRT.asm - Page 1 - 12/3/2024 15:50:21
 
 
        1/       0 :                     ;------------------------------------------------------------------------------
@@ -61,7 +61,7 @@
       58/     11F : 7D                                                  proc:   ld      a,L
       59/     120 :                                                     
       60/     120 : 5E                                                          ld      e,(hl)   
- AS V1.42 Beta [Bld 240] - Source File gleest_Z1013_KRT.asm - Page 2 - 11/29/2024 22:34:20
+ AS V1.42 Beta [Bld 240] - Source File gleest_Z1013_KRT.asm - Page 2 - 12/3/2024 15:50:21
 
 
       61/     121 : 2C                                                          inc     l
@@ -124,7 +124,7 @@
      118/     156 : FE FF                                               cp      0ffh		; Y max  
      119/     158 :                                                     
      120/     158 : 47                                                  ld      b,a
- AS V1.42 Beta [Bld 240] - Source File gleest_Z1013_KRT.asm - Page 3 - 11/29/2024 22:34:20
+ AS V1.42 Beta [Bld 240] - Source File gleest_Z1013_KRT.asm - Page 3 - 12/3/2024 15:50:21
 
 
      121/     159 :                                                     
@@ -132,226 +132,242 @@
      123/     159 :                                                     ; Pixel schreiben
      124/     159 :                                                     ;
      125/     159 :                                                     
-     126/     159 :                                                     ; yx2ad
-     127/     159 :                                                     ; in:  BC = Y,X 
-     128/     159 :                                                     ; out: HL = VRAM, (ldeco)= BWS-Block, A = Bitpos (3-Bit binär)
-     129/     159 :                                                     
-     130/     159 : DC 35 02                                            call    c,yx2ad  
-     131/     15C :                     
-     132/     15C : 06 01                                               ld      b,hi(sprite-1)          
-     133/     15E : 2F                                                  cpl
-     134/     15F : 4F                                                  ld      c,a             
-     135/     160 : 0A                                                  ld      a,(bc)          ; BWS-Byte holen
-     136/     161 : A6                                                  and     (hl)            ; Hintergrund und Pixel 
-     137/     162 : 77                                                  ld      (hl),a          ; BWS-Byte neu schreiben
-     138/     163 : 2F                                                  cpl
-     139/     164 :                                                     
-     140/     164 : E5                                                  push    hl
-     141/     165 :                                                     
-     142/     165 : D9                                                  exx
-     143/     166 :                                                     
-     144/     166 : D1                                                  pop     de              
-     145/     167 :                                        
-     146/     167 : 77                                                  ld      (hl),a          ; BWS-Byte merken
-     147/     168 : 2B                                                  dec     hl
-     148/     169 :                                                             
-     149/     169 : 3A 34 02                                            ld      a,(ldeco)       ; BWS-Block holen
-     150/     16C : 77                                                  ld      (hl),a          ; BWS-Block merken
-     151/     16D : 2B                                                  dec     hl
-     152/     16E :                                                     
-     153/     16E : 72                                                  ld      (hl),d          ; BWS hi merken
-     154/     16F : 2B                                                  dec     hl
-     155/     170 :                                                     
-     156/     170 : 73                                                  ld      (hl),e          ; BWS lo merken
-     157/     171 : 23                                                  inc     hl                      
-     158/     172 : 23                                                  inc     hl
-     159/     173 : 23                                                  inc     hl              
-     160/     174 : 78                                                  ld      a,b
-     161/     175 :                                                     
-     162/     175 : D9                                                  exx
-     163/     176 :                             
-     164/     176 :                                             dontplot:
-     165/     176 : E1                                                  pop     hl              
-     166/     177 :                                                     
-     167/     177 : D9                                                  exx
-     168/     178 :                                                     
-     169/     178 : 23                                                  inc     hl              
-     170/     179 :                     
-     171/     179 : 10 98                                       djnz    d_loop
-     172/     17B :                     
-     173/     17B : 09                                          add     hl,bc   
-     174/     17C :                                             
-     175/     17C : D9                                          exx                     
-     176/     17D :                                             
-     177/     17D :                                             random:
-     178/     17D : D1                                                  pop     de
-     179/     17E : 06 10                                               ld      b,10h
-     180/     180 :                                                     
- AS V1.42 Beta [Bld 240] - Source File gleest_Z1013_KRT.asm - Page 4 - 11/29/2024 22:34:20
+     126/     159 :                                                     ;-------------------------------
+     127/     159 :                                                     ; ZX Spectrum 
+     128/     159 :                                                     ;-------------------------------                                
+     129/     159 :                     
+     130/     159 :                                                     ; THE 'PIXEL ADDRESS' SUBROUTINE
+     131/     159 :                                                     ; This subroutine is called by the POINT subroutine and by the PLOT command routine. 
+     132/     159 :                                                     ; Is is entered with the co-ordinates of a pixel in the BC register pair and returns 
+     133/     159 :                                                     ; with HL holding the address of the display file byte which contains that pixel 
+     134/     159 :                                                     ; and A pointing to the position of the pixel within the byte.
+     135/     159 :                                     
+     136/     159 :                                                     ;call   c,22b0h         -> Spectrum ROM
+     137/     159 :                                                     
+     138/     159 :                                                     ;-------------------------------
+     139/     159 :                                                     ; Z1013 KRT
+     140/     159 :                                                     ;-------------------------------                                
+     141/     159 :                                                     
+     142/     159 :                                                     ; yx2ad
+     143/     159 :                                                     ; in:  BC = Y,X 
+     144/     159 :                                                     ; out: HL = VRAM, (ldeco)= BWS-Block, A = Bitpos (3-Bit binär)
+     145/     159 :                                                     
+     146/     159 : DC 35 02                                            call    c,yx2ad  
+     147/     15C :                     
+     148/     15C : 06 01                                               ld      b,hi(sprite-1)          
+     149/     15E : 2F                                                  cpl
+     150/     15F : 4F                                                  ld      c,a             
+     151/     160 : 0A                                                  ld      a,(bc)          ; BWS-Byte holen
+     152/     161 : A6                                                  and     (hl)            ; Hintergrund und Pixel 
+     153/     162 : 77                                                  ld      (hl),a          ; BWS-Byte neu schreiben
+     154/     163 : 2F                                                  cpl
+     155/     164 :                                                     
+     156/     164 : E5                                                  push    hl
+     157/     165 :                                                     
+     158/     165 : D9                                                  exx
+     159/     166 :                                                     
+     160/     166 : D1                                                  pop     de              
+     161/     167 :                                        
+     162/     167 : 77                                                  ld      (hl),a          ; BWS-Byte merken
+     163/     168 : 2B                                                  dec     hl
+     164/     169 :                                                             
+     165/     169 : 3A 34 02                                            ld      a,(ldeco)       ; BWS-Block holen
+     166/     16C : 77                                                  ld      (hl),a          ; BWS-Block merken
+     167/     16D : 2B                                                  dec     hl
+     168/     16E :                                                     
+     169/     16E : 72                                                  ld      (hl),d          ; BWS hi merken
+     170/     16F : 2B                                                  dec     hl
+     171/     170 :                                                     
+     172/     170 : 73                                                  ld      (hl),e          ; BWS lo merken
+     173/     171 : 23                                                  inc     hl                      
+     174/     172 : 23                                                  inc     hl
+     175/     173 : 23                                                  inc     hl              
+     176/     174 : 78                                                  ld      a,b
+     177/     175 :                                                     
+     178/     175 : D9                                                  exx
+     179/     176 :                             
+     180/     176 :                                             dontplot:
+ AS V1.42 Beta [Bld 240] - Source File gleest_Z1013_KRT.asm - Page 4 - 12/3/2024 15:50:21
 
 
-     181/     180 : CB 23                                               backw:  sla     e
-     182/     182 : CB 12                                                       rl      d
-     183/     184 : 7A                                                          ld      a,d
-     184/     185 : E6 C0                                                       and     0c0h    
-     185/     187 : EA 8B 01                                                    jp      pe,forw
-     186/     18A : 1C                                                          inc     e
-     187/     18B :                                                             
-     188/     18B : 10 F3                                       forw:   djnz    backw
-     189/     18D :                                             
-     190/     18D : 7A                                                  ld      a,d
-     191/     18E : D5                                                  push    de
-     192/     18F : 1F                                                  rra
-     193/     190 : CB 18                                               rr      b
-     194/     192 : E6 07                                               and     07h
-     195/     194 : 70                                                  ld      (hl),b   
-     196/     195 : 2C                                                  inc     l
-     197/     196 : 77                                                  ld      (hl),a  
-     198/     197 : 2C                                                  inc     l
-     199/     198 : 20 E3                                       jr      nz,random
-     200/     19A :                                             
-     201/     19A : D9                                          exx                             
-     202/     19B :                                             
-     203/     19B : 3E 0D                                       ld      a,hi(buffer2_end)
-     204/     19D : BC                                          cp      a,h
-     205/     19E :                                             
-     206/     19E : C2 10 01                            jp      nz,loop
-     207/     1A1 :                                     
-     208/     1A1 : C3 0D 01                    jp      loop_ix
-     209/     1A4 :                             
-     210/     1A4 :                     ;------------------------------------------------------------------------------
-     211/     1A4 :                     
-     212/     1F8 :                             org     BASE+0F8h
-     213/     1F8 :                     
-     214/     1F8 : FE                          db      11111110b
-     215/     1F9 : FD                          db      11111101b
-     216/     1FA : FB                          db      11111011b
-     217/     1FB : F7                          db      11110111b
-     218/     1FC : EF                          db      11101111b
-     219/     1FD : DF                          db      11011111b
-     220/     1FE : BF                          db      10111111b
-     221/     1FF : 7F                          db      01111111b
-     222/     200 :                     sprite:
-     223/     200 :                     
-     224/     200 :                             
-     225/     200 :                     ;------------------------------------------------------------------------------
-     226/     200 :                     ; Z1013 KRT Grafik-Routinen von Dietmar Uhlig aus:
-     227/     200 :                     ;
-     228/     200 :                     ; https://github.com/duhlig/Z1013_software
-     229/     200 :                     ;
-     230/     200 :                     ;------------------------------------------------------------------------------
-     231/     200 :                     
-     232/     200 :                     ;;; Grafik einschalten
-     233/     200 :                     
-     234/     200 : 08                  geinp:  defb 08h        ; KRT: Port 8, FA: Port 0CH
-     235/     201 :                     
-     236/     201 : C5                  gein:   push bc
-     237/     202 : 3A 00 02                    ld   a,(geinp)
-     238/     205 : 4F                          ld   c,a
-     239/     206 : 3E 08                       ld   a,08h
-     240/     208 : ED 79                       out  (c),a
- AS V1.42 Beta [Bld 240] - Source File gleest_Z1013_KRT.asm - Page 5 - 11/29/2024 22:34:20
+     181/     176 : E1                                                  pop     hl              
+     182/     177 :                                                     
+     183/     177 : D9                                                  exx
+     184/     178 :                                                     
+     185/     178 : 23                                                  inc     hl              
+     186/     179 :                     
+     187/     179 : 10 98                                       djnz    d_loop
+     188/     17B :                     
+     189/     17B : 09                                          add     hl,bc   
+     190/     17C :                                             
+     191/     17C : D9                                          exx                     
+     192/     17D :                                             
+     193/     17D :                                             random:
+     194/     17D : D1                                                  pop     de
+     195/     17E : 06 10                                               ld      b,10h
+     196/     180 :                                                     
+     197/     180 : CB 23                                               backw:  sla     e
+     198/     182 : CB 12                                                       rl      d
+     199/     184 : 7A                                                          ld      a,d
+     200/     185 : E6 C0                                                       and     0c0h    
+     201/     187 : EA 8B 01                                                    jp      pe,forw
+     202/     18A : 1C                                                          inc     e
+     203/     18B :                                                             
+     204/     18B : 10 F3                                       forw:   djnz    backw
+     205/     18D :                                             
+     206/     18D : 7A                                                  ld      a,d
+     207/     18E : D5                                                  push    de
+     208/     18F : 1F                                                  rra
+     209/     190 : CB 18                                               rr      b
+     210/     192 : E6 07                                               and     07h
+     211/     194 : 70                                                  ld      (hl),b   
+     212/     195 : 2C                                                  inc     l
+     213/     196 : 77                                                  ld      (hl),a  
+     214/     197 : 2C                                                  inc     l
+     215/     198 : 20 E3                                       jr      nz,random
+     216/     19A :                                             
+     217/     19A : D9                                          exx                             
+     218/     19B :                                             
+     219/     19B : 3E 0D                                       ld      a,hi(buffer2_end)
+     220/     19D : BC                                          cp      a,h
+     221/     19E :                                             
+     222/     19E : C2 10 01                            jp      nz,loop
+     223/     1A1 :                                     
+     224/     1A1 : C3 0D 01                    jp      loop_ix
+     225/     1A4 :                             
+     226/     1A4 :                     ;------------------------------------------------------------------------------
+     227/     1A4 :                     
+     228/     1F8 :                             org     BASE+0F8h
+     229/     1F8 :                     
+     230/     1F8 : FE                          db      11111110b
+     231/     1F9 : FD                          db      11111101b
+     232/     1FA : FB                          db      11111011b
+     233/     1FB : F7                          db      11110111b
+     234/     1FC : EF                          db      11101111b
+     235/     1FD : DF                          db      11011111b
+     236/     1FE : BF                          db      10111111b
+     237/     1FF : 7F                          db      01111111b
+     238/     200 :                     sprite:
+     239/     200 :                     
+     240/     200 :                             
+ AS V1.42 Beta [Bld 240] - Source File gleest_Z1013_KRT.asm - Page 5 - 12/3/2024 15:50:21
 
 
-     241/     20A : C1                          pop  bc
-     242/     20B : C9                          ret
-     243/     20C :                     
-     244/     20C :                     ;;; Grafik ausschalten
-     245/     20C :                     
-     246/     20C : 08                  gausp:  defb 08h        ; KRT: Port 8, FA: Port 10H
-     247/     20D :                     
-     248/     20D : C5                  gaus:   push bc
-     249/     20E : 3A 0C 02                    ld   a,(gausp)
-     250/     211 : 4F                          ld   c,a
-     251/     212 : 3E 09                       ld   a,09h
-     252/     214 : ED 79                       out  (c),a
-     253/     216 : C1                          pop  bc
-     254/     217 : C9                          ret
-     255/     218 :                     
-     256/     218 :                     ;;; Bildschirm löschen
-     257/     218 :                     
-     258/     218 : =8H                  deco    equ  08h
-     259/     218 :                     
-     260/     218 : E5                  cls:    push    hl
-     261/     219 : D5                          push    de
-     262/     21A : C5                          push    bc
-     263/     21B :                             
-     264/     21B : AF                          xor     a               ; Block 0
-     265/     21C : D3 08               cls1:   out     (deco), a       ; Block aktivieren
-     266/     21E : 21 00 EC                    ld      hl, 0EC00h      ; BWS Anfang
-     267/     221 : 36 FF                       ld      (hl), 0FFh      ; erste 8 Pixel auf Hintergrund"farbe"
-     268/     223 : 54                          ld      d, h
-     269/     224 : 5D                          ld      e, l
-     270/     225 : 13                          inc     de              ; Beginn des überlappenden Bereichs
-     271/     226 : 01 FF 03                    ld      bc, 003FFh      ; Länge_BWS - 1
-     272/     229 : ED B0                       ldir                    ; Hintergrund über BWS schmieren
-     273/     22B : 3C                          inc     a
-     274/     22C : FE 08                       cp      008h            ; Anzahl Blöcke
-     275/     22E : 20 EC                       jr      nz, cls1
-     276/     230 :                             
-     277/     230 : C1                          pop     bc
-     278/     231 : D1                          pop     de
-     279/     232 : E1                          pop     hl
-     280/     233 :                             
-     281/     233 : C9                          ret
-     282/     234 :                     
-     283/     234 :                     ;;; Angepasst und erweitert für GleEst (HST, 28.11.24)  
-     284/     234 :                     ;;;
-     285/     234 :                     ;;; Koordinaten (BC) in BWS-Adresse (HL) umrechnen,
-     286/     234 :                     ;;; Speicherseite schalten und merken in -> (ldeco) last deco,
-     287/     234 :                     ;;; Pixelspalte in Reg. a zurückgeben
-     288/     234 :                     
-     289/     234 : 00                  ldeco:  db      0
-     290/     235 :                     
-     291/     235 : 78                  yx2ad:  ld   a,b        ; y-Koord.
-     292/     236 : E6 F8                       and  a,0F8h     ; Bits 7-3 sind Teil der BWS-Adr.
-     293/     238 : 6F                          ld   l,a
-     294/     239 : 26 00                       ld   h,000h
-     295/     23B : 29                          add  hl,hl
-     296/     23C : 29                          add  hl,hl      ; y[7..3] -> BWS[9..5]
-     297/     23D : 79                          ld   a,c        ; x-Koord.
-     298/     23E : E6 F8                       and  a,0F8h     ; Bits 7-3 sind Teil der BWS-Adr.
-     299/     240 : 0F                          rrca
-     300/     241 : 0F                          rrca
- AS V1.42 Beta [Bld 240] - Source File gleest_Z1013_KRT.asm - Page 6 - 11/29/2024 22:34:20
+     241/     200 :                     ;------------------------------------------------------------------------------
+     242/     200 :                     ; Z1013 KRT Grafik-Routinen von Dietmar Uhlig aus:
+     243/     200 :                     ;
+     244/     200 :                     ; https://github.com/duhlig/Z1013_software
+     245/     200 :                     ;
+     246/     200 :                     ;------------------------------------------------------------------------------
+     247/     200 :                     
+     248/     200 :                     ;;; Grafik einschalten
+     249/     200 :                     
+     250/     200 : 08                  geinp:  defb 08h        ; KRT: Port 8, FA: Port 0CH
+     251/     201 :                     
+     252/     201 : C5                  gein:   push bc
+     253/     202 : 3A 00 02                    ld   a,(geinp)
+     254/     205 : 4F                          ld   c,a
+     255/     206 : 3E 08                       ld   a,08h
+     256/     208 : ED 79                       out  (c),a
+     257/     20A : C1                          pop  bc
+     258/     20B : C9                          ret
+     259/     20C :                     
+     260/     20C :                     ;;; Grafik ausschalten
+     261/     20C :                     
+     262/     20C : 08                  gausp:  defb 08h        ; KRT: Port 8, FA: Port 10H
+     263/     20D :                     
+     264/     20D : C5                  gaus:   push bc
+     265/     20E : 3A 0C 02                    ld   a,(gausp)
+     266/     211 : 4F                          ld   c,a
+     267/     212 : 3E 09                       ld   a,09h
+     268/     214 : ED 79                       out  (c),a
+     269/     216 : C1                          pop  bc
+     270/     217 : C9                          ret
+     271/     218 :                     
+     272/     218 :                     ;;; Bildschirm löschen
+     273/     218 :                     
+     274/     218 : =8H                  deco    equ  08h
+     275/     218 :                     
+     276/     218 : E5                  cls:    push    hl
+     277/     219 : D5                          push    de
+     278/     21A : C5                          push    bc
+     279/     21B :                             
+     280/     21B : AF                          xor     a               ; Block 0
+     281/     21C : D3 08               cls1:   out     (deco), a       ; Block aktivieren
+     282/     21E : 21 00 EC                    ld      hl, 0EC00h      ; BWS Anfang
+     283/     221 : 36 FF                       ld      (hl), 0FFh      ; erste 8 Pixel auf Hintergrund"farbe"
+     284/     223 : 54                          ld      d, h
+     285/     224 : 5D                          ld      e, l
+     286/     225 : 13                          inc     de              ; Beginn des überlappenden Bereichs
+     287/     226 : 01 FF 03                    ld      bc, 003FFh      ; Länge_BWS - 1
+     288/     229 : ED B0                       ldir                    ; Hintergrund über BWS schmieren
+     289/     22B : 3C                          inc     a
+     290/     22C : FE 08                       cp      008h            ; Anzahl Blöcke
+     291/     22E : 20 EC                       jr      nz, cls1
+     292/     230 :                             
+     293/     230 : C1                          pop     bc
+     294/     231 : D1                          pop     de
+     295/     232 : E1                          pop     hl
+     296/     233 :                             
+     297/     233 : C9                          ret
+     298/     234 :                     
+     299/     234 :                     ;;; Angepasst und erweitert für GleEst (HST, 28.11.24)  
+     300/     234 :                     ;;;
+ AS V1.42 Beta [Bld 240] - Source File gleest_Z1013_KRT.asm - Page 6 - 12/3/2024 15:50:21
 
 
-     301/     242 : 0F                          rrca
-     302/     243 : B5                          or   l          ; l[4..0] ist 0
-     303/     244 : 6F                          ld   l,a        ; x[7..3] -> BWS[4..0]
-     304/     245 : 7C                          ld   a,h
-     305/     246 : C6 EC                       add  a,0ECh
-     306/     248 : 67                          ld   h,a        ; --> hl += %EC00
-     307/     249 : 78                          ld   a,b        ; a:=(pixze)
-     308/     24A : E6 07                       and  a,007h     ; y[2..0] -> G-BWS-Block/-Seite
-     309/     24C : D3 08                       out  (deco),a
-     310/     24E : 32 34 02                    ld   (ldeco),a
-     311/     251 : 79                          ld   a,c        ; a:=(pixsp)
-     312/     252 : E6 07                       and  a,007h     ; x[2..0] ist Bitpos. im BWS-Byte       
-     313/     254 : C9                          ret
-     314/     255 :                             
-     315/     255 :                     end
-     316/     255 :                     
-     317/     255 :                     ;------------------------------------------------------------------------------
-     318/     255 :                     
-     319/     255 :                             ; RAM für GleEst
-     320/     255 :                             
-     321/     255 :                             align   100h
-     322/     300 :                             
-     323/     300 :                     buffer1:        
-     324/     300 :                             ds      100h
-     325/     400 :                     buffer2:        
-     326/     400 :                             ds      900h
-     327/     D00 :                     buffer2_end:    
-     328/     D00 :                             ds      20h
-     329/     D20 :                     stack:  
-     330/     D20 :                             
-     331/     D20 :                             
-     332/     D20 :                     
-     333/     D20 :                     
-     334/     D20 :                     
-     335/     D20 :                     
- AS V1.42 Beta [Bld 240] - Source File gleest_Z1013_KRT.asm - Page 7 - 11/29/2024 22:34:20
+     301/     234 :                     ;;; Koordinaten (BC) in BWS-Adresse (HL) umrechnen,
+     302/     234 :                     ;;; Speicherseite schalten und merken in -> (ldeco) last deco,
+     303/     234 :                     ;;; Pixelspalte in Reg. a zurückgeben
+     304/     234 :                     
+     305/     234 : 00                  ldeco:  db      0
+     306/     235 :                     
+     307/     235 : 78                  yx2ad:  ld   a,b        ; y-Koord.
+     308/     236 : E6 F8                       and  a,0F8h     ; Bits 7-3 sind Teil der BWS-Adr.
+     309/     238 : 6F                          ld   l,a
+     310/     239 : 26 00                       ld   h,000h
+     311/     23B : 29                          add  hl,hl
+     312/     23C : 29                          add  hl,hl      ; y[7..3] -> BWS[9..5]
+     313/     23D : 79                          ld   a,c        ; x-Koord.
+     314/     23E : E6 F8                       and  a,0F8h     ; Bits 7-3 sind Teil der BWS-Adr.
+     315/     240 : 0F                          rrca
+     316/     241 : 0F                          rrca
+     317/     242 : 0F                          rrca
+     318/     243 : B5                          or   l          ; l[4..0] ist 0
+     319/     244 : 6F                          ld   l,a        ; x[7..3] -> BWS[4..0]
+     320/     245 : 7C                          ld   a,h
+     321/     246 : C6 EC                       add  a,0ECh
+     322/     248 : 67                          ld   h,a        ; --> hl += %EC00
+     323/     249 : 78                          ld   a,b        ; a:=(pixze)
+     324/     24A : E6 07                       and  a,007h     ; y[2..0] -> G-BWS-Block/-Seite
+     325/     24C : D3 08                       out  (deco),a
+     326/     24E : 32 34 02                    ld   (ldeco),a
+     327/     251 : 79                          ld   a,c        ; a:=(pixsp)
+     328/     252 : E6 07                       and  a,007h     ; x[2..0] ist Bitpos. im BWS-Byte       
+     329/     254 : C9                          ret
+     330/     255 :                             
+     331/     255 :                     end
+     332/     255 :                     
+     333/     255 :                     ;------------------------------------------------------------------------------
+     334/     255 :                     
+     335/     255 :                             ; RAM für GleEst
+     336/     255 :                             
+     337/     255 :                             align   100h
+     338/     300 :                             
+     339/     300 :                     buffer1:        
+     340/     300 :                             ds      100h
+     341/     400 :                     buffer2:        
+     342/     400 :                             ds      900h
+     343/     D00 :                     buffer2_end:    
+     344/     D00 :                             ds      20h
+     345/     D20 :                     stack:  
+     346/     D20 :                             
+     347/     D20 :                             
+     348/     D20 :                     
+     349/     D20 :                     
+     350/     D20 :                     
+     351/     D20 :                     
+ AS V1.42 Beta [Bld 240] - Source File gleest_Z1013_KRT.asm - Page 7 - 12/3/2024 15:50:21
 
 
   Symbol Table (* = unused):
@@ -362,7 +378,7 @@
  BUFFER1 :                      300 C |  BUFFER2 :                      400 C |
  BUFFER2_END :                 0D00 C | *CASESENSITIVE :                  0 - |
  CLS :                          218 C |  CLS1 :                         21C C |
-*CONSTPI :        3.141592653589793 - | *DATE :                "11/29/2024" - |
+*CONSTPI :        3.141592653589793 - | *DATE :                 "12/3/2024" - |
  DECO :                           8 - |  DONTPLOT :                     176 C |
  D_LOOP :                       113 C | *END :                          255 C |
 *FALSE :                          0 - |  FORW :                         18B C |
@@ -378,13 +394,13 @@
 *PLOT :                         154 C |  PROC :                         11F C |
  RANDOM :                       17D C | *RELAXED :                        0 - |
  SPRITE :                       200 C |  STACK :                       0D20 C |
-*TIME :                  "22:34:20" - | *TRUE :                           1 - |
+*TIME :                  "15:50:21" - | *TRUE :                           1 - |
 *VERSION :                     142F - |  YX2AD :                        235 C |
 
      45 symbols
      23 unused symbols
 
- AS V1.42 Beta [Bld 240] - Source File gleest_Z1013_KRT.asm - Page 8 - 11/29/2024 22:34:20
+ AS V1.42 Beta [Bld 240] - Source File gleest_Z1013_KRT.asm - Page 8 - 12/3/2024 15:50:21
 
 
   Defined Functions:
@@ -392,7 +408,7 @@
 
 LO                                    | HI                                   
 
- AS V1.42 Beta [Bld 240] - Source File gleest_Z1013_KRT.asm - Page 9 - 11/29/2024 22:34:20
+ AS V1.42 Beta [Bld 240] - Source File gleest_Z1013_KRT.asm - Page 9 - 12/3/2024 15:50:21
 
 
   Code Pages:
@@ -402,9 +418,9 @@ STANDARD (0 changed characters)
 
 1 code page
 
-0.02 seconds assembly time
+0.01 seconds assembly time
 
-    335 lines source file
+    351 lines source file
       2 passes
       0 errors
       0 warnings

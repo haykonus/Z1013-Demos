@@ -123,6 +123,22 @@ lo      function x, x&255
                                 ; Pixel schreiben
                                 ;
                                 
+                                ;-------------------------------
+                                ; ZX Spectrum 
+                                ;-------------------------------                                
+
+                                ; THE 'PIXEL ADDRESS' SUBROUTINE
+                                ; This subroutine is called by the POINT subroutine and by the PLOT command routine. 
+                                ; Is is entered with the co-ordinates of a pixel in the BC register pair and returns 
+                                ; with HL holding the address of the display file byte which contains that pixel 
+                                ; and A pointing to the position of the pixel within the byte.
+                
+                                ;call   c,22b0h         -> Spectrum ROM
+                                
+                                ;-------------------------------
+                                ; Z1013 KRT
+                                ;-------------------------------                                
+                                
                                 ; yx2ad
                                 ; in:  BC = Y,X 
                                 ; out: HL = VRAM, (ldeco)= BWS-Block, A = Bitpos (3-Bit binär)
