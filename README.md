@@ -13,6 +13,9 @@ Dieses Programm für den [Z1013 mit KRT-Grafik](https://hc-ddr.hucki.net/wiki/do
 
 Zum Assemblieren wurde der [Arnold-Assembler](http://john.ccac.rwth-aachen.de:8000/as/) unter Windows 11 verwendet.
 
+> [!TIP]
+> Das Programm kann mit Drücken einer beliebigen Taste beendet werden.
+
 ## Vorausetzungen
 
 - Z1013 mit KRT-Grafik
@@ -24,6 +27,7 @@ Zum Assemblieren wurde der [Arnold-Assembler](http://john.ccac.rwth-aachen.de:80
 > Die Links unten anklicken und danach den Download-Button (Download raw file) im Github klicken, um die Datei zu laden.
 
 - [gleest_Z1013_KRT_0100H.bin](https://github.com/haykonus/Z1013-Demos/blob/main/GleEst_Z1013_KRT/gleest_Z1013_KRT_0100H.bin) auf Adresse 0100H laden.
+- [gleest_Z1013_KRT_0100H.z80](https://github.com/haykonus/Z1013-Demos/blob/main/GleEst_Z1013_KRT/gleest_Z1013_KRT_0100H.z80) auf Adresse 0100H laden.
 - mit J0100 starten
 
 ## Quellen
