@@ -2,7 +2,7 @@
 ; Titel:                GleEst für Z1013 KRT
 ;
 ; Erstellt:             20.11.2024
-; Letzte Änderung:      29.11.2024
+; Letzte Änderung:      21.12.2024
 ;------------------------------------------------------------------------------ 
 
         cpu     z80
@@ -15,25 +15,38 @@ lo      function x, x&255
         endif   
                 org     BASE
         
-        call    gein    ; Grafik einschalten
-        call    cls     ; Bildschirm löschen
+        call    gein    	; Grafik einschalten
+        call    cls     	; Bildschirm löschen
+	call	initGleEst
         
 ;------------------------------------------------------------------------------
         
         ; Start GleEst
+
+        ld      hl, 0001h       ; (stack) darf nicht 0 sein
+        push    hl
         
-        ld      sp, stack
         ld      hl, buffer1
         
         exx
-
+	
         loop_ix:
 
-                ld      hl,buffer2
+                rst	20h      	
+		db	04h		; INKEY
+                cp      a, 0            ; 0 = nicht gedrückt
+                jr      z, noKey        ; weiter
+		
+	x1:	call    cls
+                call    gaus            ; Grafik aus
+                jp      0F003h          ; BIOS -> WBOOT
+		
+        noKey:  ld      hl,buffer2
+	
                 loop:   
-                        ;ld     bc,10FFh        ; nur wenige Punkte (für Test)
-                        ld      bc,3F06h        ; BH = Abstand Punkte, BL = Anzahl Punkte 
-                        
+                        ld      bc,3F04h	; BH = 3F -> max. 64 Punkte / 256-Byte-Block
+                                                ; BL = 04 -> HL auf Anfang von nächstem 
+						;            256-Byte-Block setzen
                         d_loop:
                                 ;
                                 ; Pixel löschen
@@ -216,10 +229,10 @@ lo      function x, x&255
                         
                         exx                             
                         
-                        ld      a,hi(buffer2_end)
+                        ld      a,hi(buffer2_end)-1
                         cp      a,h
                         
-                jp      nz,loop
+                jp      nc,loop
                 
         jp      loop_ix
         
@@ -327,22 +340,50 @@ yx2ad:  ld   a,b        ; y-Koord.
         ld   a,c        ; a:=(pixsp)
         and  a,007h     ; x[2..0] ist Bitpos. im BWS-Byte       
         ret
+
+;------------------------------------------------------------------------------
+; buffer2 wird mit Adresse von "dummy", 08h und 55h initialisiert, damit beim 
+; Laufen von GleEst keine undefinierten Schreibvorgänge im RAM erfolgen können.
+;------------------------------------------------------------------------------
+        
+initGleEst:
+
+        ld      bc, (buffer2_end - buffer2)/4
+        ld      hl, buffer2
+        ld      de, dummy
+        
+fb1:    ld      (hl), e         ; Dummy-BWS hi
+        inc     hl
+        ld      (hl), d         ; Dummy-BWS lo
+        inc     hl
+        ld      (hl), 08h       ; 08h = Grafik ein
+        inc     hl
+        ld      (hl), 55h       ; Dummy-Pixel
+        inc     hl
+        
+        dec     bc
+        ld      a, b
+        or      c
+        jr      nz, fb1 
+        ret  
         
 end
 
 ;------------------------------------------------------------------------------
 
         ; RAM für GleEst
+
+dummy:  db      55h 
         
         align   100h
         
 buffer1:        
-        ds      100h
-buffer2:        
-        ds      900h
-buffer2_end:    
-        ds      20h
-stack:  
+        ds      100h        
+buffer2:        	; 12 x 256 Bytes
+        ds      0C00h   ; C00h  
+buffer2_end:  	
+
+
         
         
 
