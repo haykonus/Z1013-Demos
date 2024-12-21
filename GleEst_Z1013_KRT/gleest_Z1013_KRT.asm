@@ -128,7 +128,7 @@ lo      function x, x&255
                         plot:
                                 ld      a,e
                                 rra
-                                cp      0ffh		; Y max  
+                                ;cp      0C0h		; Y max  
                                 
                                 ld      b,a
                                 
@@ -156,8 +156,9 @@ lo      function x, x&255
                                 ; in:  BC = Y,X 
                                 ; out: HL = VRAM, (ldeco)= BWS-Block, A = Bitpos (3-Bit binär)
                                 
-                                call    c,yx2ad  
-
+                                ;call    c,yx2ad  	; nur bei Abfrage von Y-max notwendig
+				call    yx2ad
+				
                                 ld      b,hi(sprite-1)          
                                 cpl
                                 ld      c,a             
