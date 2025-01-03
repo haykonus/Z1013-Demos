@@ -16,7 +16,7 @@ Zum Assemblieren wurde der [Arnold-Assembler](http://john.ccac.rwth-aachen.de:80
 > [!TIP]
 > Das Programm kann mit Drücken einer beliebigen Taste beendet werden.
 
-## Vorausetzungen
+## Voraussetzungen
 
 - Z1013 mit KRT-Grafik
 - oder [JKCEMU](http://www.jens-mueller.org/jkcemu/index.html)
