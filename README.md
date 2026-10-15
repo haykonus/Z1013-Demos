@@ -2,6 +2,7 @@
 # INHALT
 
 [ASCII-Lines für Z1013](https://github.com/haykonus/Z1013-Demos/blob/main/README.md#ascii-lines-f%C3%BCr-z1013)
+
 [GleEst für Z1013 KRT](https://github.com/haykonus/Z1013-Demos/tree/main#gleest-f%C3%BCr-z1013-krt)
 
 <br>
@@ -13,13 +14,14 @@
 ASCII-Lines für Z1013 ala MS Screensaver. Original von V. Pohlers für den Hübler-Grafik-PC. 
 
 Tasten: 
-       + -> mehr Linien
+
+       "+" -> mehr Linien
        
-       - -> weniger Linien
+       "-" -> weniger Linien
        
-       H -> hor. Spiegelung ein/aus
+       "H" -> hor. Spiegelung ein/aus
        
-       V -> vert. Spiegelung ein/aus
+       "V" -> vert. Spiegelung ein/aus
        
        sonst:  Ende
        
