@@ -24,7 +24,9 @@ Tasten:
        "V" -> vert. Spiegelung ein/aus
        
        sonst:  Ende
-       
+
+Zum Assemblieren wurde der [Arnold-Assembler](http://john.ccac.rwth-aachen.de:8000/as/) unter Windows 11 verwendet.
+
 ## Schnellstart
 > [!NOTE]
 > Die Links unten anklicken und danach den Download-Button (Download raw file) im Github klicken, um die Datei zu laden.
