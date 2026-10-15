@@ -1,9 +1,40 @@
 [Deutsch](https://github.com/haykonus/Z1013-Demos) | [English](https://github-com.translate.goog/haykonus/Z1013-Demos?_x_tr_sl=de&_x_tr_tl=en&_x_tr_hl=de&_x_tr_pto=wapp)
 # INHALT
 
-[GleEst für Z1013 KRT](https://github.com/haykonus/Z1013-Demos/blob/main/README.md#gleest-f%C3%BCr-z1013-krt)
+[ASCII-Lines für Z1013](https://github.com/haykonus/Z1013-Demos/blob/main/README.md#gleest-f%C3%BCr-z1013-krt)
+[GleEst für Z1013 KRT](https://github.com/haykonus/Z1013-Demos/tree/main#gleest-f%C3%BCr-z1013-krt)
 
 <br>
+
+# ASCII-Lines für Z1013
+
+![Demo](/ASCII-Lines/Bilder/lines.gif)
+
+ASCII-Lines für Z1013 ala MS Screensaver. Original von V. Pohlers für den Hübler-Grafik-PC. 
+
+Tasten: 
+       + -> mehr Linien
+       
+       - -> weniger Linien
+       
+       H -> hor. Spiegelung ein/aus
+       
+       V -> vert. Spiegelung ein/aus
+       
+       sonst:  Ende
+       
+## Schnellstart
+> [!NOTE]
+> Die Links unten anklicken und danach den Download-Button (Download raw file) im Github klicken, um die Datei zu laden.
+
+- [lines.bin](https://github.com/haykonus/ASCII-Lines/blob/main/ASCII-Lines/lines.bin) auf Adresse 0100H laden und mit "J 100" starten.
+- 
+## Quellen
+
+Dieses Projekt nutzt Infos und Software aus folgenden Quellen:
+
+[1] https://hc-ddr.hucki.net/wiki/doku.php/homecomputer/hueblergrafik#downloads
+
 
 # GleEst für Z1013 KRT
 
@@ -34,8 +65,8 @@ Zum Assemblieren wurde der [Arnold-Assembler](http://john.ccac.rwth-aachen.de:80
 
 Dieses Projekt nutzt Infos und Software aus folgenden Quellen:
 
-https://hc-ddr.hucki.net/wiki/doku.php/z1013/erweiterungen/vollgrafik#krt-grafik_kleinstrechnertipps
+[1] https://hc-ddr.hucki.net/wiki/doku.php/z1013/erweiterungen/vollgrafik#krt-grafik_kleinstrechnertipps
 
-https://github.com/duhlig/Z1013_software/tree/main/krtdemo
+[2] https://github.com/duhlig/Z1013_software/tree/main/krtdemo
 
-https://zxart.ee/eng/software/demoscene/intro/256b-intro/gleest/
+[3] https://zxart.ee/eng/software/demoscene/intro/256b-intro/gleest/
