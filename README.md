@@ -11,7 +11,7 @@
 
 ![Demo](/ASCII-Lines/Bilder/lines.gif)
 
-ASCII-Lines für Z1013 ala MS Screensaver. Original von V. Pohlers für den Hübler-Grafik-PC. 
+ASCII-Lines für Z1013 ala MS Screensaver. Original von V. Pohlers/M. Leubner für den Hübler-Grafik-PC. 
 
 Tasten: 
 
