@@ -37,6 +37,9 @@ Dieses Projekt nutzt Infos und Software aus folgenden Quellen:
 
 [1] https://hc-ddr.hucki.net/wiki/doku.php/homecomputer/hueblergrafik#downloads
 
+<br>
+<br>
+<br>
 
 # GleEst für Z1013 KRT
 
