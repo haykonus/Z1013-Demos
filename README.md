@@ -29,7 +29,7 @@ Tasten:
 > [!NOTE]
 > Die Links unten anklicken und danach den Download-Button (Download raw file) im Github klicken, um die Datei zu laden.
 
-- [lines.bin](https://github.com/haykonus/ASCII-Lines/blob/main/ASCII-Lines/lines.bin) auf Adresse 0100H laden und mit "J 100" starten.
+- [lines.bin](https://github.com/haykonus/Z1013-Demos/blob/main/ASCII-Lines/lines.bin) auf Adresse 0100H laden und mit "J 100" starten.
 - 
 ## Quellen
 
