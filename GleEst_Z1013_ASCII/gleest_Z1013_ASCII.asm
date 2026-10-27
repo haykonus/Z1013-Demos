@@ -273,7 +273,7 @@ yx2ad:  push    bc
         
 initGleEst:
 
-        ld      bc, (buffer2_end - buffer2)/4
+        ld      bc, (buffer2_end - buffer2)/2
         ld      hl, buffer2
         ld      de, dummy
         
@@ -300,8 +300,8 @@ dummy:  db      55h
         
 buffer1:        
         ds      100h        
-buffer2:                ; 12 x 256 Bytes
-        ds      0600h   ; C00h  
+buffer2:                ; 6 x 256 Bytes
+        ds      0600h   ; 600h  
 buffer2_end:    
 
 
