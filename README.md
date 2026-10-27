@@ -59,7 +59,7 @@ Dieses Projekt nutzt Infos und Software aus folgenden Quellen:
 > [!NOTE]
 > Die Links unten anklicken und danach den Download-Button (Download raw file) im Github klicken, um die Datei zu laden.
 
-- [gleest_Z1013_ASCII_0100H.bin](https://github.com/haykonus/Z1013-Demos/blob/main/GleEst_Z1013_KRT/gleest_Z1013_ASCII_0100H.bin) auf Adresse 0100H laden.
+- [gleest_Z1013_ASCII_0100H.bin](https://github.com/haykonus/Z1013-Demos/blob/main/GleEst_Z1013_ASCII/gleest_Z1013_ASCII_0100H.bin) auf Adresse 0100H laden.
 - mit J0100 starten
 
 Alle weiteren Infos analog zu "GleEst für Z1013 KRT", siehe unten.
