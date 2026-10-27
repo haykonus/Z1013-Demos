@@ -3,6 +3,8 @@
 
 [ASCII-Lines für Z1013](https://github.com/haykonus/Z1013-Demos/blob/main/README.md#ascii-lines-f%C3%BCr-z1013)
 
+[GleEst für Z1013 ASCII](https://github.com/haykonus/Z1013-Demos/tree/main#gleest-f%C3%BCr-z1013-ascii)
+
 [GleEst für Z1013 KRT](https://github.com/haykonus/Z1013-Demos/tree/main#gleest-f%C3%BCr-z1013-krt)
 
 <br>
@@ -38,6 +40,29 @@ Zum Assemblieren wurde der [Arnold-Assembler](http://john.ccac.rwth-aachen.de:80
 Dieses Projekt nutzt Infos und Software aus folgenden Quellen:
 
 [1] https://hc-ddr.hucki.net/wiki/doku.php/homecomputer/hueblergrafik#downloads
+
+<br>
+<br>
+<br>
+
+# GleEst für Z1013 ASCII
+
+![Demo](/GleEst_Z1013_ASCII/Bilder/gleest_Z1013_ASCII.gif)
+
+## Voraussetzungen
+
+- Z1013
+- oder [JKCEMU](http://www.jens-mueller.org/jkcemu/index.html)
+- min. 4KB RAM
+  
+## Schnellstart
+> [!NOTE]
+> Die Links unten anklicken und danach den Download-Button (Download raw file) im Github klicken, um die Datei zu laden.
+
+- [gleest_Z1013_ASCII_0100H.bin](https://github.com/haykonus/Z1013-Demos/blob/main/GleEst_Z1013_KRT/gleest_Z1013_ASCII_0100H.bin) auf Adresse 0100H laden.
+- mit J0100 starten
+
+Alle weiteren Infos analog zu "GleEst für Z1013 KRT", siehe unten.
 
 <br>
 <br>
