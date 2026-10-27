@@ -44,7 +44,7 @@ lo      function x, x&255
         noKey:  ld      hl,buffer2
 	
                 loop:   
-                        ld      bc,3F04h	; BH = 3F -> max. 64 Punkte / 256-Byte-Block
+                        ld      bc,1104h	; BH = 3F -> max. 64 Punkte / 256-Byte-Block
                                                 ; BL = 04 -> HL auf Anfang von nächstem 
 						;            256-Byte-Block setzen
                         d_loop:
@@ -206,7 +206,7 @@ lo      function x, x&255
                         
                         random:
                                 pop     de
-                                ld      b,10h
+                                ld      b,8;10h
                                 
                                 backw:  sla     e
                                         rl      d
@@ -230,7 +230,7 @@ lo      function x, x&255
                         
                         exx                             
                         
-                        ld      a,hi(buffer2_end)-1
+                        ld      a,hi(buffer2_end)-8;1
                         cp      a,h
                         
                 jp      nc,loop
