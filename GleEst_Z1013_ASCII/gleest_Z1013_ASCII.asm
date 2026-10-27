@@ -1,8 +1,8 @@
 ;------------------------------------------------------------------------------
-; Titel:                GleEst für Z1013 KRT
+; Titel:                GleEst für Z1013 ASCII
 ;
-; Erstellt:             20.11.2024
-; Letzte Änderung:      21.12.2024
+; Erstellt:             26.10.2026
+; Letzte Änderung:      27.10.2026
 ;------------------------------------------------------------------------------ 
 
         cpu     z80
@@ -15,10 +15,8 @@ lo      function x, x&255
         endif   
                 org     BASE
         
-        ;call    gein    	; Grafik einschalten
-        call    cls     	; Bildschirm löschen
-;xxx:	jr	xxx
-	call	initGleEst
+        call    cls             ; Bildschirm löschen
+        call    initGleEst
         
 ;------------------------------------------------------------------------------
         
@@ -30,24 +28,23 @@ lo      function x, x&255
         ld      hl, buffer1
         
         exx
-	
+        
         loop_ix:
 
-                rst	20h      	
-		db	04h		; INKEY
+                rst     20h             
+                db      04h             ; INKEY
                 cp      a, 0            ; 0 = nicht gedrückt
                 jr      z, noKey        ; weiter
-		
-	x1:	call    cls
-                ;call    gaus            ; Grafik aus
+                
+        x1:     call    cls
                 jp      0F003h          ; BIOS -> WBOOT
-		
+                
         noKey:  ld      hl,buffer2
-	
+        
                 loop:   
-                        ld      bc,1304h	; BH = 3F -> max. 64 Punkte / 256-Byte-Block
+                        ld      bc,1304h        ; BH = 3F -> max. 64 Punkte / 256-Byte-Block
                                                 ; BL = 04 -> HL auf Anfang von nächstem 
-						;            256-Byte-Block setzen
+                                                ;            256-Byte-Block setzen
                         d_loop:
                                 ;
                                 ; Pixel löschen
@@ -57,8 +54,8 @@ lo      function x, x&255
                                 inc     hl  
                                 ld      d,(hl)          ;BWS hi holen
                                 
-				ld	a, ' '		; Reset "Pixel"
-				ld	(de),a			
+                                ld      a, ' '          ; Reset "Pixel"
+                                ld      (de),a                  
                                 
                                 exx                     
                                 
@@ -122,7 +119,7 @@ lo      function x, x&255
                         plot:
                                 ld      a,e
                                 rra
-                                ;cp      0C0h		; Y max  
+                                ;cp      0C0h           ; Y max  
                                 
                                 ld      b,a
                                 
@@ -150,10 +147,10 @@ lo      function x, x&255
                                 ; in:  BC = Y,X 
                                 ; out: HL = VRAM
                                 
-                                ;call    c,yx2ad  	; nur bei Abfrage von Y-max notwendig
-				call    yx2ad
-				ld	(hl),'.'	; Set "Pixel"
-				
+                                ;call    c,yx2ad        ; nur bei Abfrage von Y-max notwendig
+                                call    yx2ad
+                                ld      (hl),'.'        ; Set "Pixel"
+                                
                                 push    hl
                                 
                                 exx
@@ -222,7 +219,7 @@ lo      function x, x&255
 
         
 ;------------------------------------------------------------------------------
-; Z1013 Grafik-Routinen 
+; Z1013 "Grafik"-Routinen 
 ;------------------------------------------------------------------------------
 
 ;;; Bildschirm löschen
@@ -238,21 +235,21 @@ cls:
 ;;; Koordinaten (BC) in BWS-Adresse (HL) umrechnen,
 ;;; B = Y, C = X
 
-yx2ad:  push	bc
-	push	de
-        rept 3  ; y/8	
+yx2ad:  push    bc
+        push    de
+        rept 3  ; y/8   
         srl     b       ; y
         endm
-	
+        
         rept 3  ; x/8
         srl     c       ; x
         endm
-	
-	ld      e,c	; DE = X
+        
+        ld      e,c     ; DE = X
         ld      d,0
                         
         ld      l,d     ; Y*32
-	ld	h,b
+        ld      h,b
         rept    3
         srl     h
         rr      l
@@ -264,11 +261,11 @@ yx2ad:  push	bc
         ld      a,h
         or      a,0ECh
         ld      h,a
-	
-	pop	de
-	pop	bc
-	ret
-	
+        
+        pop     de
+        pop     bc
+        ret
+        
 ;------------------------------------------------------------------------------
 ; buffer2 wird mit Adresse von "dummy", 08h und 55h initialisiert, damit beim 
 ; Laufen von GleEst keine undefinierten Schreibvorgänge im RAM erfolgen können.
@@ -303,9 +300,9 @@ dummy:  db      55h
         
 buffer1:        
         ds      100h        
-buffer2:        	; 12 x 256 Bytes
+buffer2:                ; 12 x 256 Bytes
         ds      0600h   ; C00h  
-buffer2_end:  	
+buffer2_end:    
 
 
         
