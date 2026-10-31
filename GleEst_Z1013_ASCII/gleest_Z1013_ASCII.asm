@@ -237,31 +237,30 @@ cls:
 
 yx2ad:  push    bc
         push    de
-        rept 3  ; y/8   
-        srl     b       ; y
-        endm
-        
-        rept 3  ; x/8
-        srl     c       ; x
+     
+	ld	a,b
+	and	a,0F8h	; Bit 0-2 = 0
+	
+        rept 3  	; X/8
+        srl     c       
         endm
         
         ld      e,c     ; DE = X
         ld      d,0
                         
-        ld      l,d     ; Y*32
-        ld      h,b
-        rept    3
-        srl     h
-        rr      l
-        endm
-                        
-        add     hl,de   ; Y*32 + X      
+        ld      h,d     ; HL = Y' 
+        ld      l,a
+	
+	add	hl,hl
+	add	hl,hl	; HL = Y * 32/8 = Y*4
+	
+        add     hl,de   ; Y*4 + X      
         
-                        ; hl = 0000-03FF
+                        ; HL = 0000-03FF
         ld      a,h
         or      a,0ECh
         ld      h,a
-        
+			; HL = EC00-EFFF
         pop     de
         pop     bc
         ret
