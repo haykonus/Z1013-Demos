@@ -254,7 +254,7 @@ yx2ad:  push    bc
         add     hl,hl
         add     hl,hl   ; HL = Y' * 32/8 = Y'*4
         
-        add     hl,de   ; Y*4 + X      
+        add     hl,de   ; Y'*4 + X      
         
                         ; HL = 0000-03FF
         ld      a,h
